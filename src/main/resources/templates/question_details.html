@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soru Detayları</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0 15px;
+      color: #333;
+    }
+
+    h1, h3 {
+      color: #4CAF50;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    li {
+      background-color: #fff;
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    li p {
+      margin: 5px 0;
+    }
+
+    form {
+      margin-top: 20px;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      button {
+        width: 100%;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>Soru: <span th:text="${question.title}"></span></h1>
+<p th:text="${question.content}"></p>
+
+<h3>Cevaplar</h3>
+<ul>
+  <th:block th:each="answer : ${answers}">
+    <li>
+      <p><strong>Cevap:</strong> <span th:text="${answer.answerText}"></span></p>
+      <p><i>Yazan: <span th:text="${answer.user.username}"></span></i></p>
+    </li>
+  </th:block>
+</ul>
+
+<h3>Cevapla</h3>
+<form th:action="@{/answers/create}" method="post">
+  <input type="hidden" name="questionId" th:value="${question.id}">
+  <div>
+    <label for="answerText">Cevabınızı Yazın:</label><br>
+    <textarea name="answerText" id="answerText" rows="4" placeholder="Cevabınızı buraya yazın..."></textarea>
+  </div>
+  <div>
+    <button type="submit">Cevapla</button>
+  </div>
+</form>
+
+<a href="/questions">Tüm Sorulara Geri Dön</a>
+
+</body>
+</html>

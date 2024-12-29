@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Soru Oluştur</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0 15px;
+            color: #333;
+        }
+
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            text-align: center;
+            color: #f44336;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            form {
+                padding: 15px;
+                margin: 10px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Yeni Soru Oluştur</h1>
+<form action="/questions/create" method="post">
+    <div>
+        <label for="title">Soru Başlığı:</label>
+        <input type="text" id="title" name="title" placeholder="Soru başlığını buraya yazın" required>
+    </div>
+    <div>
+        <label for="description">Açıklama:</label>
+        <textarea id="description" name="description" rows="4" placeholder="Soru açıklamasını buraya yazın" required></textarea>
+    </div>
+
+    <!-- Etiket Türü Seçimi -->
+    <div>
+        <label for="tagType">Etiket Türü:</label>
+        <select id="tagType" name="tagType" required onchange="updateTagsField()">
+            <option value="programming">Programming</option>
+            <option value="database">Database</option>
+        </select>
+    </div>
+
+    <!-- Etiketler için Alan -->
+    <div id="tagsFieldDiv">
+        <label for="tags">Etiketler:</label>
+        <textarea id="tags" name="tags" rows="2" placeholder="Etiketleri virgülle ayırarak yazın (örneğin: java, spring, html)" required></textarea>
+    </div>
+
+    <div>
+        <button type="submit">Soruyu Oluştur</button>
+    </div>
+</form>
+
+<!-- Hata Mesajı (Opsiyonel) -->
+<p id="error-message" style="color: #f44336;" th:text="${message}"></p>
+
+<script>
+    // Dinamik olarak Etiketler alanını güncelleyen fonksiyon
+    function updateTagsField() {
+        const tagType = document.getElementById("tagType").value;
+        const tagsFieldDiv = document.getElementById("tagsFieldDiv");
+
+        // Etiketlere göre alanın içeriğini değiştirmek
+        if (tagType === "programming") {
+            document.getElementById("tags").placeholder = "Etiketleri virgülle ayırarak yazın (örneğin: java, spring, html)";
+        } else if (tagType === "database") {
+            document.getElementById("tags").placeholder = "Etiketleri virgülle ayırarak yazın (örneğin: mysql, postgresql, oracle)";
+        }
+    }
+
+    // Sayfa yüklendiğinde otomatik olarak başlangıçta güncelleme yapılır
+    window.onload = updateTagsField;
+</script>
+
+</body>
+</html>

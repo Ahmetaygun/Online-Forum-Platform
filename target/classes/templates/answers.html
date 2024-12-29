@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cevaplar</title>
+  <!-- Stil eklemek için CSS -->
+  <style>
+    li {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    li small {
+      font-size: 0.8em;
+      color: #777;
+    }
+    button {
+      padding: 5px 10px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .edit-button {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .delete-button {
+      background-color: #f44336;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<h3>Cevaplar</h3>
+<div>
+  <ul>
+    <li th:each="answer : ${question.answers}">
+      <div>
+        <!-- Cevap içeriği -->
+        <p th:text="${answer.answerText}"></p>
+
+        <!-- Kullanıcı adı -->
+        <small>By <span th:text="${answer.user.username}"></span></small>
+
+        <!-- Cevap oluşturulma zamanı -->
+        <br>
+        <small th:text="${#dates.format(answer.createdAt, 'dd.MM.yyyy HH:mm')}"></small>
+
+        <!-- Cevap düzenleme ve silme butonları -->
+        <div>
+          <!-- Sadece cevabı yazan kullanıcı cevabını düzenleyebilir veya silebilir -->
+          <button
+                  th:if="${answer.user.id == ${session.user.id}}"
+                  class="edit-button"
+                  th:attr="onclick='editAnswer(${answer.id})'">Düzenle</button>
+
+          <button
+                  th:if="${answer.user.id == ${session.user.id}}"
+                  class="delete-button"
+                  th:attr="onclick='deleteAnswer(${answer.id})'">Sil</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- Cevap düzenleme formu, modale açılabilir şekilde eklenebilir -->
+<script>
+  // Düzenleme butonuna tıklama
+  function editAnswer(answerId) {
+    alert("Düzenle: " + answerId);
+    // Düzenleme işlemleri burada yapılacak, örneğin bir form açılabilir.
+  }
+
+  // Silme butonuna tıklama
+  function deleteAnswer(answerId) {
+    if(confirm("Bu cevabı silmek istediğinizden emin misiniz?")) {
+      // Burada cevap silme işlemi yapılabilir, örneğin AJAX ile backend'e istek gönderebilirsiniz
+      alert("Cevap silindi: " + answerId);
+    }
+  }
+</script>
+
+</body>
+</html>
